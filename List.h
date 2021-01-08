@@ -56,11 +56,11 @@ public:
     void PushRear(const T& data);
     void PopFront();
     void PopRear();
+    void PopItem(const T &other);
 
     T& Front() {
         return first->right->data;
     }
-
     T& Rear() {
         return last->left->data;
     }
@@ -213,6 +213,17 @@ void List<T>::PopRear()
     last->left->right = last;
     temp->left = nullptr;
     temp->right = nullptr;
+}
+
+template <class T>
+void List<T>::PopItem(const T &other) {
+    std::shared_ptr<Node<T>> tmp = first->right;
+    while (tmp != last) {
+        if (tmp->data == other) {
+            tmp->left->right = tmp->right;
+            tmp->right->left = tmp->left;
+        }
+    }
 }
 
 #endif //LIST_H

@@ -17,6 +17,10 @@ struct Course {
     Course(const Course& other) = default;
     Course& operator=(const Course& other) = default;
     ~Course() = default;
+
+    bool operator==(const Course &other) {
+        return id == other.id;
+    }
 };
 
 

@@ -4,15 +4,15 @@
 
 ClassList::ClassList() : classes(new Array<int>(1,-1))
 {
-    this->numOfClasses = 0;
+    numOfClasses = 0;
 }
 
 void ClassList::GrowArray()
 {
-    std::shared_ptr<Array<int>> newArr = new Array<int>(classes->GetSize()*2,-1);
+    std::shared_ptr<Array<int>> newArr(new Array<int>(classes->GetSize()*2,-1));
     for(int i = 0; i  < numOfClasses; i++)
     {
-        newArr[i] = *classes[i];
+        (*newArr)[i] = (*classes)[i];
     }
     classes = newArr;
 }
@@ -21,9 +21,9 @@ void ClassList::AddClass()
 {
     if(classes->GetSize() == numOfClasses)
     {
-        this->GrowArray();
+        GrowArray();
     }
-    *classes[++numOfClasses] = 0;
+    (*classes)[++numOfClasses] = 0;
 }
 void ClassList::WatchClass(int classID, int time)
 {
@@ -31,11 +31,11 @@ void ClassList::WatchClass(int classID, int time)
     {
         //throw
     }
-    if(*classes[classID] == -1 )
+    if((*classes)[classID] == -1 )
     {
         //throw
     }
-    *classes[classID] += time;
+    (*classes)[classID] += time;
 }
 int ClassList::TimeWatched(int classID)
 {
@@ -43,9 +43,9 @@ int ClassList::TimeWatched(int classID)
     {
         //throw
     }
-    if(*classes[classID] == -1 )
+    if((*classes)[classID] == -1 )
     {
         //throw
     }
-    return *classes[classID];
+    return (*classes)[classID];
 }
