@@ -2,6 +2,7 @@
 #define TREENODE_H
 
 #define NULL_HEIGHT -1
+#define NULL_SIZE 0
 
 #include <memory>
 
@@ -15,10 +16,11 @@ public:
     std::shared_ptr<TreeNode> left;
     std::shared_ptr<TreeNode> right;
     int height;
+    int size;
 
     TreeNode() = delete;
     explicit TreeNode(const S &key, const T &data) noexcept:
-        key(key), data(data), top(nullptr), left(nullptr), right(nullptr), height(0) {}
+        key(key), data(data), top(nullptr), left(nullptr), right(nullptr), height(0), size(1) {}
     TreeNode(const TreeNode &other) = default;
     TreeNode& operator=(const TreeNode &other) = default;
     ~TreeNode() = default;
