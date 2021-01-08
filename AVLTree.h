@@ -1,8 +1,6 @@
 #ifndef AVLTREE_H
 #define AVLTREE_H
 
-#include <iostream>
-
 #include "TreeNode.h"
 #include "Exception.h"
 #include "List.h"
