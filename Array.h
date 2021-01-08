@@ -10,19 +10,17 @@ private:
     int size;
 public:
     Array() = delete;
-    explicit Array(int size) : size(size)
-    {
-        data = new T[size]();
-    }
     //wet_2
-    Array(int size, const T defaultVal) : size(size)//constructor that inserts default value to all cells
+    //constructor that inserts default value to all cells
+    explicit Array(int size, const T defaultValue = T()) : size(size)
     {
         data = new T[size]();
         for(int i =0; i<size; i++)
         {
-            data[i] = defaultVal;
+            data[i] = defaultValue;
         }
     }
+    //wet_2
     Array(const Array &other): size(other.size)
     {
         data = new T[size]();
