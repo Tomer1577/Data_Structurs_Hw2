@@ -224,6 +224,7 @@ void List<T>::PopItem(const T &other) {
             tmp->right->left = tmp->left;
         }
     }
+    //throw
 }
 
 #endif //LIST_H

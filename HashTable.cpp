@@ -43,5 +43,17 @@ void HashTable::Insert(Course &course)
 
 void HashTable::Remove(int id)
 {
-    TODO;//requires a fix to Course
+    int index = Hash(id);
+    (*table)[index].PopItem(Course(id)); //ctor currently undefined
+}
+
+Course& HashTable::GetCourse(int id)
+{
+    int index = Hash(id);
+    for (Course& course:(*table)[index]) {
+        if (course.id == id) {
+            return course;
+        }
+    }
+    //throw
 }
