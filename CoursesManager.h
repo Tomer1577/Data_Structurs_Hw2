@@ -9,6 +9,8 @@
 #include "TimeTreeKey.h"
 #include "ClassList.h"
 
+
+
 class CoursesManager
 {
     private:

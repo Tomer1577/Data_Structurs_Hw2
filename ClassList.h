@@ -4,6 +4,10 @@
 #include "Array.h"
 #include <memory>
 
+#define NOCLASS -1
+#define INITIAL_CLASS_SIZE 1
+
+
 class ClassList
 {
     private:
