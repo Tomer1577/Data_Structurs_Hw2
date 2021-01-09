@@ -18,8 +18,10 @@ private:
     void RollRight(std::shared_ptr<TreeNode<S,T>> root);
     void RollLeft(std::shared_ptr<TreeNode<S,T>> root);
 
-    void BalanceUpwards(std::shared_ptr<TreeNode<S,T>> start);
     void RemoveReplacer(std::shared_ptr<TreeNode<S,T>> &target);
+
+    void AdjustSizes(std::shared_ptr<TreeNode<S,T>> start, int modifier);
+    void BalanceUpwards(std::shared_ptr<TreeNode<S,T>> start);
 
     std::shared_ptr<TreeNode<S,T>> GetNode(const S &key);
 
@@ -32,6 +34,9 @@ public:
 
     T& GetItem(const S &key);
     const T& GetItem(const S &key) const;
+
+    const T& GetIthItem(int i) const;
+
     void Insert(const S &key, const T &data);
     void Remove(const S &key);
 
@@ -270,6 +275,12 @@ void AVLTree<S,T>::RollRight(std::shared_ptr<TreeNode<S,T>> root)
     }
     root->update_height();
     left->update_height();
+    int leftSize = swing == nullptr ? NULL_SIZE : swing->size;
+    int rightSize = root->right == nullptr ? NULL_SIZE : root->right->size;
+    root->size = 1 + leftSize + rightSize;
+    leftSize = left->left == nullptr ? NULL_SIZE : left->left->size;
+    rightSize = root->size;
+    left->size = 1 + leftSize + rightSize;
 }
 
 template <class S, class T>
@@ -299,6 +310,21 @@ void AVLTree<S,T>::RollLeft(std::shared_ptr<TreeNode<S,T>> root)
     }
     root->update_height();
     right->update_height();
+    int leftSize = root->left == nullptr ? NULL_SIZE : root->left->size;
+    int rightSize = swing == nullptr ? NULL_SIZE : swing->size;
+    root->size = 1 + leftSize + rightSize;
+    leftSize = root->size;
+    rightSize = right->right == nullptr ? NULL_SIZE : right->right->size;
+    right->size = 1 + leftSize + rightSize;
+}
+
+template <class S, class T>
+void AVLTree<S,T>::AdjustSizes(std::shared_ptr<TreeNode<S,T>> start, int modifier)
+{
+    while (start != nullptr) {
+        start->size += modifier;
+        start = start->top;
+    }
 }
 
 template <class S, class T>
@@ -346,6 +372,7 @@ void AVLTree<S,T>::RemoveReplacer(std::shared_ptr<TreeNode<S,T>> &target)
         }
         temp->top = nullptr;
         temp->right = nullptr;
+        AdjustSizes(parent, -1);
         BalanceUpwards(parent);
     } else {
         parent->right = temp->right;
@@ -354,6 +381,7 @@ void AVLTree<S,T>::RemoveReplacer(std::shared_ptr<TreeNode<S,T>> &target)
         }
         temp->top = nullptr;
         temp->right = nullptr;
+        AdjustSizes(parent, -1);
         BalanceUpwards(parent);
     }
 }
@@ -398,6 +426,31 @@ const T& AVLTree<S,T>::GetItem(const S &key) const
 }
 
 template <class S, class T>
+const T& AVLTree<S,T>::GetIthItem(int i) const
+{
+    if (root == nullptr || i > root->size) {
+        //throw
+    }
+    int counter = 0;
+    std::shared_ptr<TreeNode<S,T>> seeker = root;
+    while (seeker != nullptr) {
+        int diff = i-counter;
+        int rightSize = seeker->right == nullptr ? NULL_SIZE : seeker->right->size;
+        if (rightSize + 1 < diff) {
+            counter += rightSize + 1;
+            seeker = seeker->left;
+        }
+        if (rightSize + 1 == diff) {
+            return seeker->data;
+        }
+        if (rightSize + 1 > diff) {
+            seeker = seeker->right;
+        }
+    }
+    assert(false);
+}
+
+template <class S, class T>
 void AVLTree<S,T>::Insert(const S &key,const  T &data)
 {
     if (root == nullptr) {
@@ -424,6 +477,7 @@ void AVLTree<S,T>::Insert(const S &key,const  T &data)
         parent->right->top = parent;
         temp = parent->right;
     }
+    AdjustSizes(temp, 1);
     BalanceUpwards(temp);
 }
 
@@ -471,6 +525,7 @@ void AVLTree<S,T>::Remove(const S &key)
             toRemove->top->left = nullptr;
         }
         toRemove->top = nullptr;
+        AdjustSizes(temp, -1);
         BalanceUpwards(temp);
         return;
     }
@@ -487,6 +542,7 @@ void AVLTree<S,T>::Remove(const S &key)
         toRemove->right->top = toRemove->top;
         toRemove->top = nullptr;
         toRemove->right = nullptr;
+        AdjustSizes(temp, -1);
         BalanceUpwards(temp);
         return;
     }
@@ -500,6 +556,7 @@ void AVLTree<S,T>::Remove(const S &key)
         toRemove->left->top = toRemove->top;
         toRemove->top = nullptr;
         toRemove->left = nullptr;
+        AdjustSizes(temp, -1);
         BalanceUpwards(temp);
         return;
     }
