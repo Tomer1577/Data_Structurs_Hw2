@@ -3,29 +3,30 @@
 
 void HashTable::Grow()
 {
-    int oldSize = table->GetSize();
-    std::shared_ptr<Array<List<Course>>> newTable(new Array<List<Course>>(2*oldSize));
-    for (int i = 0; i < oldSize; ++i) {
-        List<Course> &list = (*table)[i];
-        for (const Course &course:list) {
-            (*newTable)[course.id % 2*oldSize].PushFront(course);
-        }
-    }
+    std::shared_ptr<Array<List<Course>>> newTable(new Array<List<Course>>(2*table->GetSize()));
+    ReHash(table, newTable);
     table = newTable;
 }
 
 void HashTable::Shrink()
 {
-    int oldSize = table->GetSize();
-    assert(oldSize % 2 == 0 && oldSize > 8);
-    std::shared_ptr<Array<List<Course>>> newTable(new Array<List<Course>>(oldSize/2));
+    std::shared_ptr<Array<List<Course>>> newTable(new Array<List<Course>>(table->GetSize()/2));
+    ReHash(table, newTable);
+    table = newTable;
+}
+
+void ReHash(std::shared_ptr<Array<List<Course>>> oldTable, std::shared_ptr<Array<List<Course>>> newTable)
+{
+    int oldSize = oldTable->GetSize();
+    int newSize = newTable->GetSize();
+    assert(oldSize >= 8 && newSize >= 8);
+    assert(oldSize == newSize*2 || oldSize*2 == newSize);
     for (int i = 0; i < oldSize; ++i) {
-        List<Course> &list = (*table)[i];
+        List<Course> &list = (*oldTable)[i];
         for (const Course &course:list) {
-            (*newTable)[course.id % oldSize/2].PushFront(course);
+            (*newTable)[course.id % newSize].PushFront(course);
         }
     }
-    table = newTable;
 }
 
 void HashTable::Insert(Course &course)
