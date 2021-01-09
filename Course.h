@@ -6,7 +6,7 @@
 
 struct Course {
     int id;
-    Array<int> classes;
+    Array<int> classes;//change to class list!!!
 
     Course(int id,int numOfClasses): id(id), classes(numOfClasses)
     {

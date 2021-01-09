@@ -19,6 +19,7 @@ class ClassList
     void AddClass();
     void WatchClass(int classID, int time);
     int TimeWatched(int classID);
+    int GetClassnum();
 
 
 

@@ -49,3 +49,8 @@ int ClassList::TimeWatched(int classID)
     }
     return (*classes)[classID];
 }
+
+int ClassList::GetClassnum()
+{
+    return numOfClasses;
+}
