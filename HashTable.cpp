@@ -19,8 +19,6 @@ void ReHash(std::shared_ptr<Array<List<Course>>> oldTable, std::shared_ptr<Array
 {
     int oldSize = oldTable->GetSize();
     int newSize = newTable->GetSize();
-    assert(oldSize >= 8 && newSize >= 8);
-    assert(oldSize == newSize*2 || oldSize*2 == newSize);
     for (int i = 0; i < oldSize; ++i) {
         List<Course> &list = (*oldTable)[i];
         for (const Course &course:list) {
