@@ -89,6 +89,8 @@ StatusType CoursesManager::GetIthWatchedClass(int i, int* courseID, int* classID
     {
         return INVALID_INPUT;
     }
-    //TimeTreeKey ithWatched = watchedClasses.
+    TimeTreeKey ithWatched = watchedClasses.GetIthItem(i); //catch
+    *classID = ithWatched.classId;
+    *courseID = ithWatched.courseId;
 
 }
