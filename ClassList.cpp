@@ -25,31 +25,10 @@ void ClassList::AddClass()
     }
     (*classes)[++numOfClasses] = 0;
 }
-void ClassList::WatchClass(int classID, int time)
+int& ClassList::operator[](int classID)
 {
-    if(classes->GetSize() <= classID)
-    {
-        //throw
-    }
-    if((*classes)[classID] == NOCLASS)
-    {
-        //throw
-    }
-    (*classes)[classID] += time;
-}
-int ClassList::TimeWatched(int classID)
-{
-    if(classes->GetSize() <= classID)
-    {
-        //throw
-    }
-    if((*classes)[classID] == NOCLASS )
-    {
-        //throw
-    }
     return (*classes)[classID];
 }
-
 int ClassList::GetClassnum()
 {
     return numOfClasses;

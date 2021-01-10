@@ -6,13 +6,10 @@
 
 struct Course {
     int id;
-    Array<int> classes;//change to class list!!!
+    ClassList classes;//change to class list!!!
 
-    Course(int id,int numOfClasses): id(id), classes(numOfClasses)
+    Course(int id): id(id), classes()
     {
-        for(int i = 0; i < numOfClasses; ++i) {
-            classes[i] = 0;
-        }
     }
     Course(const Course& other) = default;
     Course& operator=(const Course& other) = default;

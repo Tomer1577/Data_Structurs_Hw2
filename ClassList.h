@@ -21,8 +21,7 @@ class ClassList
     ClassList& operator=(const ClassList& other) = delete;
     ~ClassList() = default;
     void AddClass();
-    void WatchClass(int classID, int time);
-    int TimeWatched(int classID);
+    int& operator[](int classID);
     int GetClassnum();
 
 

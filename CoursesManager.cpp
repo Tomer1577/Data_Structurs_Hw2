@@ -6,7 +6,7 @@ StatusType CoursesManager::AddCourse(int courseID)
     {
         return INVALID_INPUT;
     }
-    Course newCourse(courseID,1);
+    Course newCourse(courseID);
     this->courseTable.Insert(newCourse);//i fthink catch
     return SUCCESS;
 
@@ -22,9 +22,9 @@ StatusType CoursesManager::RemoveCourse(int courseID)
     ClassList classesToRemove =  toRemove.classes;//will be fine when switch to 
     for(int i = 0 ; i < classesToRemove.GetClassnum(); i++)
     {
-        if(classesToRemove.TimeWatched(i) > 0)
+        if(classesToRemove[i] > 0)
         {
-            TimeTreeKey keyToRemove(classesToRemove.TimeWatched(i),courseID,i);
+            TimeTreeKey keyToRemove(classesToRemove[i],courseID,i);
             watchedClasses.Remove(keyToRemove);//catch??
         }
     }
@@ -56,7 +56,11 @@ StatusType CoursesManager::WatchClass(int courseID, int classID, int time)
     {
         return INVALID_INPUT;
     }
-    tempClass.classes.WatchClass(classID,time);//this will be fine when change to claasss list
+    if(tempClass.classes[classID] == NOCLASS)
+    {
+        return FAILURE;
+    }
+    tempClass.classes[classID] += time;
     return SUCCESS;
 }
 
@@ -71,7 +75,11 @@ StatusType CoursesManager::TimeViewed(int courseID, int classID, int *timeViewed
     {
         return INVALID_INPUT;
     }
-    *timeViewed = tempClass.classes.TimeWatched(classID);//this will be fine when change to claasss list
+    if(tempClass.classes[classID] == NOCLASS)
+    {
+        return FAILURE;
+    }
+    *timeViewed = tempClass.classes[classID];
     return SUCCESS;
 }
 
