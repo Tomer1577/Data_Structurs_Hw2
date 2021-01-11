@@ -1,5 +1,5 @@
 #include "HashTable.h"
-#include <cassert>
+#include "Exception.h"
 
 void HashTable::Grow()
 {

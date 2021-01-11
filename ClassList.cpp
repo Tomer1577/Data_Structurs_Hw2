@@ -1,4 +1,5 @@
 #include "ClassList.h"
+#include "Exception.h"
 
 
 
@@ -23,13 +24,23 @@ void ClassList::AddClass()
     {
         GrowArray();
     }
-    (*classes)[++numOfClasses] = 0;
+    (*classes)[numOfClasses++] = 0;
 }
-int& ClassList::operator[](int classID)
+int& ClassList::operator[] (int classID)
 {
+    if (classID < 0 || classID >= numOfClasses) {
+        throw OutOfBounds();
+    }
     return (*classes)[classID];
 }
-int ClassList::GetClassnum()
+const int& ClassList::operator[] (int classID) const
+{
+    if (classID < 0 || classID >= numOfClasses) {
+        throw OutOfBounds();
+    }
+    return (*classes)[classID];
+}
+int ClassList::GetClassNum()
 {
     return numOfClasses;
 }

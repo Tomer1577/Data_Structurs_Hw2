@@ -22,7 +22,8 @@ class ClassList
     ~ClassList() = default;
     void AddClass();
     int& operator[](int classID);
-    int GetClassnum();
+    const int& operator[](int classID) const;
+    int GetClassNum();
 
 
 

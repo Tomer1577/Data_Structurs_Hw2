@@ -3,14 +3,13 @@
 
 #include "Array.h"
 #include "List.h"
+#include "ClassList.h"
 
 struct Course {
     int id;
     ClassList classes;//change to class list!!!
 
-    Course(int id): id(id), classes()
-    {
-    }
+    explicit Course(int id): id(id) {}
     Course(const Course& other) = default;
     Course& operator=(const Course& other) = default;
     ~Course() = default;
