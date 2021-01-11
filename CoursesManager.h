@@ -4,7 +4,7 @@
 #include <memory>
 #include "AVLTree.h"
 #include "HashTable.h"
-#include "library.h"
+#include "library2.h"
 #include "Exception.h"
 #include "TimeTreeKey.h"
 #include "ClassList.h"
