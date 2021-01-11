@@ -30,7 +30,7 @@ void ReHash(std::shared_ptr<Array<List<Course>>> oldTable, std::shared_ptr<Array
 void HashTable::Insert(Course &course)
 {
     if (Exists(course.id)) {
-        //throw
+        throw ItemFound();
     }
     if (numOfItems == table->GetSize()/2) {
         Grow();
@@ -54,5 +54,5 @@ Course& HashTable::GetCourse(int id)
             return course;
         }
     }
-    //throw
+    throw ItemNotFound();
 }

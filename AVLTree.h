@@ -429,7 +429,7 @@ template <class S, class T>
 const T& AVLTree<S,T>::GetIthItem(int i) const
 {
     if (root == nullptr || i > root->size) {
-        //throw
+        throw OutOfBounds();
     }
     int counter = 0;
     std::shared_ptr<TreeNode<S,T>> seeker = root;
