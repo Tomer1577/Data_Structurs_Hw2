@@ -7,7 +7,17 @@ StatusType CoursesManager::AddCourse(int courseID)
         return INVALID_INPUT;
     }
     Course newCourse(courseID);
+    try{
     this->courseTable.Insert(newCourse);//i fthink catch
+    }
+    catch(ItemFound &e)
+    {
+        return FAILURE;
+    }
+    catch(std::exception &e)
+    {
+        return ALLOCATION_ERROR;
+    }
     return SUCCESS;
 
 }
@@ -19,29 +29,51 @@ StatusType CoursesManager::RemoveCourse(int courseID)
         return INVALID_INPUT;
     }
     Course toRemove = (this->courseTable).GetCourse(courseID);
-    ClassList classesToRemove =  toRemove.classes;//will be fine when switch to 
+    ClassList classesToRemove =  toRemove.classes;
     for(int i = 0 ; i < classesToRemove.GetClassnum(); i++)
     {
         if(classesToRemove[i] > 0)
         {
             TimeTreeKey keyToRemove(classesToRemove[i],courseID,i);
-            watchedClasses.Remove(keyToRemove);//catch??
+            try
+            {
+                watchedClasses.Remove(keyToRemove);//catch??
+            }
+            catch(ItemNotFound &e)
+            {
+                return FAILURE;
+            }
+            catch(std::exception &e)
+            {
+                return ALLOCATION_ERROR;
+            }
         }
     }
     this->courseTable.Remove(courseID);
     return SUCCESS;
 }
 
-StatusType CoursesManager::AddClass(int courseID, int* classID)///WHY THE FUCK IS IT POINTER????? do i put it back in??
+StatusType CoursesManager::AddClass(int courseID, int* classID)
 {
     if(courseID <= 0)
     {
         return INVALID_INPUT;
     }
-    Course& tempClass = courseTable.GetCourse(courseID);//catch!
-    //no need to check class id match
-    tempClass.classes.AddClass();//this will be fine when change to claasss list
-    *classID = tempClass.classes.GetClassnum()-1;
+    try {
+        Course& tempClass = courseTable.GetCourse(courseID);//catch!
+        //no need to check class id match
+        tempClass.classes.AddClass();//this will be fine when change to claasss list
+        *classID = tempClass.classes.GetClassnum()-1;
+    }
+    catch(ItemNotFound &e)
+    {
+        return FAILURE;
+    }
+    catch(std::exception &e)
+    {
+        return ALLOCATION_ERROR;
+    }
+    
     return SUCCESS;
 }
 
@@ -51,16 +83,26 @@ StatusType CoursesManager::WatchClass(int courseID, int classID, int time)
     {
         return INVALID_INPUT;
     }
-    Course& tempClass = courseTable.GetCourse(courseID);//catch!
-    if(tempClass.classes.GetClassnum() <  classID+1)////this will be fine when change to claasss list
-    {
-        return INVALID_INPUT;
+    try {
+        Course& tempClass = courseTable.GetCourse(courseID);//catch!
+        if(tempClass.classes.GetClassnum() <  classID+1)
+        {
+            return INVALID_INPUT;
+        }
+        if(tempClass.classes[classID] == NOCLASS)
+        {
+            return FAILURE;
+        }
+        tempClass.classes[classID] += time;
     }
-    if(tempClass.classes[classID] == NOCLASS)
+    catch(ItemNotFound &e)
     {
         return FAILURE;
     }
-    tempClass.classes[classID] += time;
+    catch(std::exception &e)
+    {
+        return ALLOCATION_ERROR;
+    } 
     return SUCCESS;
 }
 
@@ -70,16 +112,27 @@ StatusType CoursesManager::TimeViewed(int courseID, int classID, int *timeViewed
     {
         return INVALID_INPUT;
     }
-    Course& tempClass = courseTable.GetCourse(courseID);//catch!
-    if(tempClass.classes.GetClassnum() <  classID+1)////this will be fine when change to claasss list
-    {
-        return INVALID_INPUT;
+    try {
+        Course& tempClass = courseTable.GetCourse(courseID);//catch!
+        if(tempClass.classes.GetClassnum() <  classID+1)
+        {
+            return INVALID_INPUT;
+        }
+        if(tempClass.classes[classID] == NOCLASS)
+        {
+            return FAILURE;
+        }
+        *timeViewed = tempClass.classes[classID];
     }
-    if(tempClass.classes[classID] == NOCLASS)
+    catch(ItemNotFound &e)
     {
         return FAILURE;
     }
-    *timeViewed = tempClass.classes[classID];
+    catch(std::exception &e)
+    {
+        return ALLOCATION_ERROR;
+    }
+    
     return SUCCESS;
 }
 
@@ -89,8 +142,18 @@ StatusType CoursesManager::GetIthWatchedClass(int i, int* courseID, int* classID
     {
         return INVALID_INPUT;
     }
-    TimeTreeKey ithWatched = watchedClasses.GetIthItem(i); //catch
-    *classID = ithWatched.classId;
-    *courseID = ithWatched.courseId;
-
+    try {
+        TimeTreeKey ithWatched = watchedClasses.GetIthItem(i); //catch
+        *classID = ithWatched.classId;
+        *courseID = ithWatched.courseId;
+    }
+    catch(OutOfBounds &e)
+    {
+        return FAILURE;
+    }
+    catch(std::exception &e)
+    {
+         return ALLOCATION_ERROR;
+    }
+    return SUCCESS;
 }
