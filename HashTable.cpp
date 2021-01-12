@@ -36,7 +36,6 @@ void HashTable::Insert(Course &course)
         Grow();
     }
     int index = Hash(course.id);
-    List<Course> &list = (*table)[index];
     (*table)[index].PushFront(course);
     ++numOfItems;
 }
