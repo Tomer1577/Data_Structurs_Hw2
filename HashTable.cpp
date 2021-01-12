@@ -36,6 +36,7 @@ void HashTable::Insert(Course &course)
         Grow();
     }
     int index = Hash(course.id);
+    List<Course> &list = (*table)[index];
     (*table)[index].PushFront(course);
     ++numOfItems;
 }
@@ -43,7 +44,7 @@ void HashTable::Insert(Course &course)
 void HashTable::Remove(int id)
 {
     int index = Hash(id);
-    (*table)[index].PopItem(Course(id)); //ctor currently undefined
+    (*table)[index].PopItem(Course(id));
 }
 
 Course& HashTable::GetCourse(int id)

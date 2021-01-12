@@ -29,6 +29,8 @@ public:
         if (this != &other) {
             std::shared_ptr<Node<T>> newFirst(new Node<T>(T()));
             std::shared_ptr<Node<T>> newLast(new Node<T>(T()));
+            newFirst->right = newLast;
+            newFirst->right = newLast;
             for (const T& item:other) {
                 std::shared_ptr<Node<T>> newNode(new Node<T>(item));
                 newNode->left = last->left;
@@ -125,7 +127,7 @@ public:
     }
     bool operator!=(const iterator& other)
     {
-        return current == other.current;
+        return current != other.current;
     }
 };
 
@@ -165,7 +167,7 @@ public:
     }
     bool operator!=(const const_iterator& other)
     {
-        return current == other.current;
+        return current != other.current;
     }
 };
 

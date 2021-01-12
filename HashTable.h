@@ -21,7 +21,7 @@ private:
 
     void Grow();
     void Shrink();
-    void ReHash(std::shared_ptr<Array<List<Course>>> oldTable, std::shared_ptr<Array<List<Course>>> newTable);
+    static void ReHash(std::shared_ptr<Array<List<Course>>> oldTable, std::shared_ptr<Array<List<Course>>> newTable);
 
     bool Exists(int id) const {
         int index = Hash(id);

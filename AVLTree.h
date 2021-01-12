@@ -477,7 +477,7 @@ void AVLTree<S,T>::Insert(const S &key,const  T &data)
         parent->right->top = parent;
         temp = parent->right;
     }
-    AdjustSizes(temp, 1);
+    AdjustSizes(temp->top, 1);
     BalanceUpwards(temp);
 }
 
@@ -514,6 +514,7 @@ void AVLTree<S,T>::Remove(const S &key)
     }
     bool isRightChild = key > toRemove->top->key;
     std::shared_ptr<TreeNode<S,T>> temp = toRemove->top;
+    assert(temp != nullptr);
     if (toRemove->left == nullptr &&  toRemove->right == nullptr)
     {
         if (toRemove == first) {
