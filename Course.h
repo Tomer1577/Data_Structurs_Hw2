@@ -8,7 +8,7 @@
 struct Course {
     int id;
     ClassList classes;//change to class list!!!
-
+    Course() : id(-1) {}
     explicit Course(int id): id(id) {}
     Course(const Course& other) = default;
     Course& operator=(const Course& other) = default;

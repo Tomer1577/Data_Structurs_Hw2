@@ -15,7 +15,7 @@ void HashTable::Shrink()
     table = newTable;
 }
 
-void ReHash(std::shared_ptr<Array<List<Course>>> oldTable, std::shared_ptr<Array<List<Course>>> newTable)
+void HashTable::ReHash(std::shared_ptr<Array<List<Course>>> oldTable, std::shared_ptr<Array<List<Course>>> newTable)
 {
     int oldSize = oldTable->GetSize();
     int newSize = newTable->GetSize();

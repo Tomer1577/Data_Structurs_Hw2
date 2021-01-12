@@ -51,7 +51,14 @@ StatusType GetIthWatchedClass(void *DS, int i, int *courses, int *classes)
     }
     return ((CoursesManager*)DS)->GetIthWatchedClass(i,courses,classes);
 }
-
+StatusType AddClass(void* DS, int courseID, int* classID)
+{
+    if(DS == NULL)
+    {
+        return INVALID_INPUT;
+    }
+    return ((CoursesManager*)DS)->AddClass(courseID,classID);
+}
 void Quit(void** DS)//is this right?
 {
 
