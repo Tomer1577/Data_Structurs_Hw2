@@ -43,7 +43,9 @@ void HashTable::Insert(Course &course)
 void HashTable::Remove(int id)
 {
     int index = Hash(id);
-    (*table)[index].PopItem(Course(id));
+    if (!(*table)[index].PopItem(Course(id))) {
+        throw ItemNotFound();
+    }
 }
 
 Course& HashTable::GetCourse(int id)

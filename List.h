@@ -58,7 +58,7 @@ public:
     void PushRear(const T& data);
     void PopFront();
     void PopRear();
-    void PopItem(const T &other);
+    bool PopItem(const T &other);
 
     T& Front() {
         return first->right->data;
@@ -111,7 +111,7 @@ public:
 
     iterator& operator++()
     {
-        current = current->left;
+        current = current->right;
         return *this;
     }
     iterator operator++(int)
@@ -151,7 +151,7 @@ public:
 
     const_iterator& operator++()
     {
-        current = current->left;
+        current = current->right;
         return *this;
     }
     const_iterator operator++(int)
@@ -218,15 +218,17 @@ void List<T>::PopRear()
 }
 
 template <class T>
-void List<T>::PopItem(const T &other) {
+bool List<T>::PopItem(const T &other) {
     std::shared_ptr<Node<T>> tmp = first->right;
     while (tmp != last) {
         if (tmp->data == other) {
             tmp->left->right = tmp->right;
             tmp->right->left = tmp->left;
+            return true;
         }
+        tmp = tmp->right;
     }
-    //throw
+    return false;
 }
 
 #endif //LIST_H
